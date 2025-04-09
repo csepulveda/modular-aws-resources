@@ -1,0 +1,29 @@
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: eks.amazonaws.com/compute-type
+          operator: In
+          values:
+          - hybrid
+ipam:
+  mode: cluster-pool
+  operator:
+    clusterPoolIPv4MaskSize: 24
+    clusterPoolIPv4PodCIDRList:
+    - 192.168.101.0/24
+operator:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: eks.amazonaws.com/compute-type
+            operator: In
+            values:
+              - hybrid
+  unmanagedPodWatcher:
+    restart: false
+envoy:
+  enabled: false

@@ -38,5 +38,7 @@ override.tf.json
 .terraformrc
 terraform.rc
 
-
+step-by-step.txt
+.vscode
 nuke.yaml
+EKS-HYBRID/nodeConfig.yaml

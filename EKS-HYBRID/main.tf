@@ -22,7 +22,7 @@ module "eks" {
     vpc-cni                = {}
   }
 
-  vpc_id                   =  data.terraform_remote_state.vpc.outputs.vpc_id
+  vpc_id                   = data.terraform_remote_state.vpc.outputs.vpc_id
   subnet_ids               = data.terraform_remote_state.vpc.outputs.private_subnets
   control_plane_subnet_ids = data.terraform_remote_state.vpc.outputs.control_plane_subnet_ids
 
