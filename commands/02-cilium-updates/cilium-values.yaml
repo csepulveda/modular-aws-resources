@@ -10,10 +10,12 @@ affinity:
 ipam:
   mode: cluster-pool
   operator:
-    clusterPoolIPv4MaskSize: 24
+    clusterPoolIPv4MaskSize: 25
     clusterPoolIPv4PodCIDRList:
-    - 192.168.101.0/24
+    - 192.168.101.0/25
+    - 192.168.101.128/25
 operator:
+  replicas: 1
   affinity:
     nodeAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
@@ -27,3 +29,18 @@ operator:
     restart: false
 envoy:
   enabled: false
+kubeProxyReplacement: true
+l2announcements:
+  leaseDuration: 2s
+  leaseRenewDeadline: 1s
+  leaseRetryPeriod: 200ms
+  enabled: true
+externalIPs:
+  enabled: true
+
+k8sClientRateLimit:
+  qps: 100
+  burst: 150
+
+k8sServiceHost: 938968CEA8A548592D40BE9E1FF9A8B1.gr7.us-east-1.eks.amazonaws.com
+k8sServicePort: 443
