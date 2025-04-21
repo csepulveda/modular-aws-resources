@@ -40,6 +40,25 @@ module "eks" {
       }]
     }
   }
+  
+  node_security_group_additional_rules = {
+    allow-all-80-traffic-from-loadbalancers = {
+      cidr_blocks = [for s in data.aws_subnet.elb_subnets : s.cidr_block]
+      description = "Allow all traffic from load balancers"
+      from_port   = 80
+      to_port     = 80
+      protocol    = "TCP"
+      type        = "ingress"
+    }
+    hybrid-all = {
+      cidr_blocks = ["192.168.100.0/23"]
+      description = "Allow all traffic from remote node/pod network"
+      from_port   = 0
+      to_port     = 0
+      protocol    = "all"
+      type        = "ingress"
+    }
+  }
 
   cluster_security_group_additional_rules = {
     hybrid-all = {
@@ -107,8 +126,8 @@ resource "local_file" "nodeConfig" {
         region: ${local.region}
       hybrid:
         ssm:
-          activationCode: ${aws_ssm_activation.this.activation_code}
           activationId: ${aws_ssm_activation.this.id}
+          activationCode: ${aws_ssm_activation.this.activation_code} 
   EOT
   filename = "nodeConfig.yaml"
 }

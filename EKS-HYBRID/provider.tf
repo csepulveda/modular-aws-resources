@@ -59,3 +59,20 @@ data "terraform_remote_state" "vpc" {
     path = "../VPC/terraform.tfstate"
   }
 }
+
+data "aws_subnets" "elb" {
+  filter {
+    name   = "tag:kubernetes.io/role/elb"
+    values = ["1"]
+  }
+
+  filter {
+    name   = "vpc-id"
+    values = [data.terraform_remote_state.vpc.outputs.vpc_id]
+  }
+}
+
+data "aws_subnet" "elb_subnets" {
+  for_each = toset(data.aws_subnets.elb.ids)
+  id       = each.key
+}
